@@ -1,0 +1,346 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lato:wght@300;400&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { background: transparent; }
+
+  .page {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #ffe6f0 0%, #fff0fb 40%, #fce4ff 70%, #ffe8f5 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1.5rem 3rem;
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .confetti-layer { position: absolute; inset: 0; pointer-events: none; }
+
+  .hero {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0.5rem;
+  }
+
+  .cake-emoji {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 0.25rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #d63a8a, #a855f7, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+
+  .subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: #b3407a;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0.8rem auto 1.4rem;
+    width: fit-content;
+    color: #e879b0;
+    font-size: 1.2rem;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #e879b0);
+  }
+
+  .divider::after {
+    background: linear-gradient(90deg, #e879b0, transparent);
+  }
+
+  .card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 560px;
+    z-index: 2;
+  }
+
+  .content-card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(236, 72, 153, 0.2);
+    border-radius: 20px;
+    padding: 1.6rem 2rem;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(168, 85, 247, 0.1);
+  }
+
+  .content-card p {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #7c3d6e;
+    font-weight: 300;
+  }
+
+  .flowers {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1.6rem;
+    z-index: 2;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .magic-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .magic-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .magic-btn:active { transform: scale(0.97); }
+
+  .btn-wish {
+    background: linear-gradient(135deg, #f472b6, #ec4899, #db2777);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
+  }
+
+  .btn-poem {
+    background: linear-gradient(135deg, #c084fc, #a855f7, #9333ea);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+  }
+
+  .btn-icon { font-size: 1.15rem; margin-right: 6px; }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(80, 0, 60, 0.45);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: linear-gradient(160deg, #fff0fa 0%, #f8e8ff 100%);
+    border-radius: 24px;
+    padding: 2.2rem 2rem;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    border: 2px solid rgba(236, 72, 153, 0.3);
+    box-shadow: 0 20px 60px rgba(100, 0, 80, 0.2);
+  }
+
+  .modal-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #b3407a;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-body {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: #7c3d6e;
+    font-weight: 300;
+    white-space: pre-line;
+  }
+
+  .modal-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+
+  .close-btn {
+    margin-top: 1.4rem;
+    background: linear-gradient(135deg, #f472b6, #a855f7);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.65rem 2rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    transition: transform 0.2s;
+  }
+
+  .close-btn:hover { transform: scale(1.05); }
+
+  .float {
+    position: absolute;
+    pointer-events: none;
+    font-size: 1.5rem;
+    animation: floatUp linear infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+  }
+</style>
+
+<div class="page" id="page">
+  <div class="confetti-layer" id="floats"></div>
+
+  <div class="hero">
+    <span class="cake-emoji">🎂</span>
+    <h1 class="title">Happy Birthday</h1>
+    <h2 class="title" style="font-size:2.6rem;">Houda!</h2>
+    <p class="subtitle">Today the world is brighter because of you ✨</p>
+    <div class="divider">🌸</div>
+  </div>
+
+  <div class="card-wrapper">
+    <div class="content-card">
+      <div class="flowers">🌷 🌺 🌸 🌹 🌸 🌺 🌷</div>
+      <p>
+        On this beautiful day, the universe pauses to celebrate the wonderful soul that you are.
+        Your smile lights up every room, your laughter is the sweetest melody,
+        and your heart holds enough kindness to fill the whole world.
+        May this birthday bring you nothing but joy, magic, and endless love.
+      </p>
+    </div>
+
+    <div class="btn-row">
+      <button class="magic-btn btn-wish" onclick="openModal('wish')">
+        <span class="btn-icon">🎁</span> Birthday Wish
+      </button>
+      <button class="magic-btn btn-poem" onclick="openModal('poem')">
+        <span class="btn-icon">💜</span> Love Poem
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <span class="modal-emoji" id="modal-emoji">🎉</span>
+    <div class="modal-title" id="modal-title">Title</div>
+    <div class="modal-body" id="modal-body">Content</div>
+    <button class="close-btn" onclick="closeModal()">Close ✕</button>
+  </div>
+</div>
+
+<script>
+  const wishContent = {
+    emoji: "🎂🕯️✨",
+    title: "A birthday wish for you",
+    body: `Houda, on your special day,
+I wish you a year filled with laughter that makes your eyes sparkle,
+adventures that take your breath away,
+and moments so beautiful they stay in your heart forever.
+
+May every dream you carry quietly inside you begin to bloom,
+may every door you knock on open wide,
+and may happiness follow you like sunlight
+wherever you go.
+
+You deserve the world and more —
+happy birthday, my love. 🌸`
+  };
+
+  const poemContent = {
+    emoji: "💜🌹💫",
+    title: "A poem just for Houda",
+    body: `In the gallery of all I know,
+you are the painting I return to —
+soft colors, deep warmth,
+a beauty that grows the longer I look.
+
+Your name is a melody
+I never tire of hearing,
+your laugh a song
+that turns ordinary days into gold.
+
+If the stars were asked
+why they shine so bright,
+I believe they'd say
+they learned it from you.
+
+Happy birthday, Houda —
+you are my favorite everything. 💜`
+  };
+
+  function openModal(type) {
+    const data = type === 'wish' ? wishContent : poemContent;
+    document.getElementById('modal-emoji').textContent = data.emoji;
+    document.getElementById('modal-title').textContent = data.title;
+    document.getElementById('modal-body').textContent = data.body;
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modal-overlay') || e.currentTarget.tagName === 'BUTTON') {
+      document.getElementById('modal-overlay').classList.remove('open');
+    }
+  }
+
+  const emojis = ['🌸','🌺','🌷','✨','💜','🎀','🌹','💫','🎊','🌼'];
+  function spawnFloat() {
+    const el = document.createElement('span');
+    el.className = 'float';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 95 + '%';
+    el.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+    el.style.animationDuration = (5 + Math.random() * 6) + 's';
+    el.style.animationDelay = (Math.random() * 3) + 's';
+    document.getElementById('floats').appendChild(el);
+    setTimeout(() => el.remove(), 11000);
+  }
+  setInterval(spawnFloat, 700);
+  for (let i = 0; i < 6; i++) spawnFloat();
+</script>
